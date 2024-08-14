@@ -5,7 +5,7 @@ const check = 'fa-circle-check';
 const uncheck = 'fa-circle';
 const lineThrough = 'line-through';
 let id = 0;
-const LIST=[]
+const LIST = [];
 
 function addBook(book, id, read, deleted) {
     if (deleted) return;
@@ -37,7 +37,8 @@ function readBook(newItem) {
     const textElement = icon.nextElementSibling;
     if (textElement) {
         textElement.classList.toggle(lineThrough);
-        LIST[newItem.id].read = LIST[Element.id].read ?false :true
+        const itemId = parseInt(icon.id);
+        LIST[itemId].read = !LIST[itemId].read; 
     }
 }
 
@@ -51,11 +52,11 @@ enter.addEventListener('click', () => {
             read: false,
             deleted: false
         });
+        console.log(LIST);
         id++;
     }
     input.value = '';
 });
-
 
 document.addEventListener('keyup', function(event) {
     if (event.key === 'Enter') {
@@ -68,12 +69,12 @@ document.addEventListener('keyup', function(event) {
                 read: false,
                 deleted: false
             });
+            console.log(LIST);
             id++;
         }
         input.value = '';
     }
 });
-
 
 list.addEventListener('click', function(event) {
     const newItem = event.target;
@@ -87,5 +88,7 @@ list.addEventListener('click', function(event) {
 });
 
 function deleteBook(newItem) {
+    const itemId = parseInt(newItem.id);
+    LIST[itemId].deleted = true;
     newItem.parentElement.remove();
 }
