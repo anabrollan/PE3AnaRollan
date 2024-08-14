@@ -6,7 +6,7 @@ const check = 'fa-circle-check';
 const uncheck = 'fa-circle';
 const lineThrough = 'line-through';
 let id = 0;
-const LIST = [];
+let LIST = [];
 
 function addBook(book, id, read, deleted) {
     if (deleted) return;
@@ -56,6 +56,7 @@ enter.addEventListener('click', () => {
         console.log(LIST);
         id++;
     }
+    localStorage.setItem('BOOKLIST',JSON.stringify(LIST))
     input.value = '';
 });
 
@@ -73,6 +74,7 @@ document.addEventListener('keyup', function(event) {
             console.log(LIST);
             id++;
         }
+        localStorage.setItem('BOOKLIST',JSON.stringify(LIST))
         input.value = '';
     }
 });
@@ -86,7 +88,24 @@ list.addEventListener('click', function(event) {
     } else if (newItemData === 'delete') {
         deleteBook(newItem);
     }
+    localStorage.setItem('BOOKLIST',JSON.stringify(LIST))
 });
+
+let data = localStorage.getItem('BOOKLIST')
+if(data){
+    LIST=JSON.parse(data)
+    id = LIST.length
+    uploadList(LIST)
+}else {
+    LIST = []
+    id = 0
+}
+
+function uploadList(DATA){
+    DATA.forEach(function(i){
+        addBook(i.name,i.id,i.read,i.deleted)
+    })
+}
 
 function deleteBook(newItem) {
     const itemId = parseInt(newItem.id);
