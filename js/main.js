@@ -1,37 +1,75 @@
-const date = document.querySelector('#date')
-const list = document.querySelector('#book-list')
-const input = document.querySelector('#input')
-const enter = document.querySelector('#enter')
-const check = 'fa-regular fa-circle-check'
-const unchek = 'fa-regular fa-circle'
-const line-through = 'line-through'
+const list = document.querySelector('#book-list');
+const input = document.querySelector('#input');
+const enter = document.querySelector('#enter');
+const check = 'fa-circle-check';
+const uncheck = 'fa-circle';
+const lineThrough = 'line-through';
+let id = 0;
 
-function addBook (book,id,read,deleted) {
-    const newItem = 
-    `
-    <li id="newItem">                
-    <i class="fa-regular fa-circle" data="read" id="0"></i>
-    <p class="text">${book}</p>
-    <i class="fa-solid fa-delete-left" data="delete" id="0"></i>
+function addBook(book, id, read, deleted) {
+    if (deleted) return;
+
+    const READ = read ? `fa-regular ${check}` : `fa-regular ${uncheck}`;
+    const LINE = read ? lineThrough : '';
+
+    const newItem = `
+    <li>                
+        <i class="${READ}" data="read" id="${id}"></i>
+        <p class="text ${LINE}">${book}</p>
+        <i class="fa-solid fa-delete-left" data="delete" id="${id}"></i>
     </li>
-    `  
-    book-list.insertAdjacentHTML("beforeend",newItem)
+    `;
+    list.insertAdjacentHTML("beforeend", newItem);
 }
 
-enter.addEventListener('click',()=> {
-    const book = input.value
-    if(book) {
-        addBook(book)
-    }
-    input.value=''
-})
+function readBook(newItem) {
+    const icon = newItem;
 
-document.addEventListener('keyup',function(event){
-    if(event.key=='Enter'){
-        const book = input.value
-        if(book) {
-            addBook(book)
-        }
-        input.value=''
+    if (icon.classList.contains(check)) {
+        icon.classList.remove(check);
+        icon.classList.add(uncheck);
+    } else {
+        icon.classList.remove(uncheck);
+        icon.classList.add(check);
     }
-})
+
+    const textElement = icon.nextElementSibling;
+    if (textElement) {
+        textElement.classList.toggle(lineThrough);
+    }
+}
+
+enter.addEventListener('click', () => {
+    const book = input.value;
+    if (book) {
+        addBook(book, id, false, false);
+        id++;
+    }
+    input.value = '';
+});
+
+document.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        const book = input.value;
+        if (book) {
+            addBook(book, id, false, false);
+            id++;
+        }
+        input.value = '';
+    }
+});
+
+list.addEventListener('click', function(event) {
+    const newItem = event.target;
+    const newItemData = newItem.attributes.data.value;
+    
+    if (newItemData === 'read') {
+        readBook(newItem);
+    } else if (newItemData === 'delete') {
+        deleteBook(newItem);
+    }
+});
+
+function deleteBook(newItem) {
+    newItem.parentElement.remove();
+}
