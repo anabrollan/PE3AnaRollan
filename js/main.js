@@ -1,3 +1,4 @@
+const date = document.querySelector('#date')
 const list = document.querySelector('#book-list');
 const input = document.querySelector('#input');
 const enter = document.querySelector('#enter');
@@ -92,3 +93,10 @@ function deleteBook(newItem) {
     LIST[itemId].deleted = true;
     newItem.parentElement.remove();
 }
+
+const DATE = new Date();
+date.innerHTML = DATE.toLocaleDateString('es-CL', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric'
+});
