@@ -55,8 +55,15 @@ enter.addEventListener('click', () => {
         });
         console.log(LIST);
         id++;
+
+        Swal.fire({
+            title: '¡Libro agregado!',
+            text: `Se ha agregado ${book} a tu estantería`,
+            icon: 'success',
+            confirmButtonText: 'Listo'
+        });
     }
-    localStorage.setItem('BOOKLIST',JSON.stringify(LIST))
+    localStorage.setItem('BOOKLIST', JSON.stringify(LIST));
     input.value = '';
 });
 
@@ -73,8 +80,16 @@ document.addEventListener('keyup', function(event) {
             });
             console.log(LIST);
             id++;
+
+            // SweetAlert when a book is added
+            Swal.fire({
+                title: 'Book Added!',
+                text: `You've added "${book}" to your list.`,
+                icon: 'success',
+                confirmButtonText: 'Cool'
+            });
         }
-        localStorage.setItem('BOOKLIST',JSON.stringify(LIST))
+        localStorage.setItem('BOOKLIST', JSON.stringify(LIST));
         input.value = '';
     }
 });
@@ -88,23 +103,23 @@ list.addEventListener('click', function(event) {
     } else if (newItemData === 'delete') {
         deleteBook(newItem);
     }
-    localStorage.setItem('BOOKLIST',JSON.stringify(LIST))
+    localStorage.setItem('BOOKLIST', JSON.stringify(LIST));
 });
 
-let data = localStorage.getItem('BOOKLIST')
-if(data){
-    LIST=JSON.parse(data)
-    id = LIST.length
-    uploadList(LIST)
-}else {
-    LIST = []
-    id = 0
+let data = localStorage.getItem('BOOKLIST');
+if (data) {
+    LIST = JSON.parse(data);
+    id = LIST.length;
+    uploadList(LIST);
+} else {
+    LIST = [];
+    id = 0;
 }
 
-function uploadList(DATA){
-    DATA.forEach(function(i){
-        addBook(i.name,i.id,i.read,i.deleted)
-    })
+function uploadList(DATA) {
+    DATA.forEach(function(i) {
+        addBook(i.name, i.id, i.read, i.deleted);
+    });
 }
 
 function deleteBook(newItem) {
